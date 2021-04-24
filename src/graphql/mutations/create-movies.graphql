@@ -1,0 +1,7 @@
+mutation createMovies  {
+  createMovie(options: { title: "Hallow Man", minutes: 100 }) {
+    id
+    title
+    minutes
+  }
+}

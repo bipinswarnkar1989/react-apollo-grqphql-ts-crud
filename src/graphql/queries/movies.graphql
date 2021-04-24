@@ -1,0 +1,7 @@
+query getMovies {
+  movies {
+    id
+    title
+    minutes
+  }
+}
