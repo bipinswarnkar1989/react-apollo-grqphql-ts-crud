@@ -73,7 +73,17 @@ export type GetMoviesQuery = (
   )> }
 );
 
+export type MovieFragment = (
+  { __typename?: 'Movie' }
+  & Pick<Types.Movie, 'title' | 'minutes'>
+);
 
+export const MovieFragmentDoc = gql`
+    fragment Movie on Movie {
+  title
+  minutes
+}
+    `;
 export const GetMoviesDocument = gql`
     query getMovies {
   movies {

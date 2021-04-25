@@ -5,3 +5,8 @@ query getMovies {
     minutes
   }
 }
+
+fragment Movie on Movie {
+  title
+  minutes
+}
