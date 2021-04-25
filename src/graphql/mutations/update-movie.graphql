@@ -1,0 +1,3 @@
+mutation updateMovie($input: MovieUpdateInput!, $id: Int!) {
+  updateMovie(input: $input, id: $id)
+}
