@@ -3,6 +3,7 @@ import { FC } from "react";
 import { useGetMoviesQuery } from "../../graphql/queries/__generated__/movies.generated";
 
 import { useHandleEdit } from "../../hooks/useHandleEdit";
+import { useHandleDelete } from "../../hooks/useHandleDelete";
 
 export const Home: FC = () => {
   const { data, loading, error } = useGetMoviesQuery();
@@ -14,6 +15,8 @@ export const Home: FC = () => {
     editables,
     message,
   } = useHandleEdit();
+
+  const { handleDeleteClick } = useHandleDelete();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -37,6 +40,8 @@ export const Home: FC = () => {
           <tr>
             <th>Title</th>
             <th>Minutes</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -78,6 +83,11 @@ export const Home: FC = () => {
                 <td>{m.minutes}</td>
                 <td>
                   <button onClick={() => handleEditClick(m.id)}>Edit</button>
+                </td>
+                <td>
+                  <button onClick={() => handleDeleteClick(m.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             )
