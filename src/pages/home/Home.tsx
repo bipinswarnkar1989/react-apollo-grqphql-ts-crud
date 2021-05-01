@@ -4,9 +4,11 @@ import { useGetMoviesQuery } from "../../graphql/queries/__generated__/movies.ge
 
 import { useHandleEdit } from "../../hooks/useHandleEdit";
 import { useHandleDelete } from "../../hooks/useHandleDelete";
+import { useHandleCreate } from "../../hooks/useHandleCreate";
 
 export const Home: FC = () => {
   const { data, loading, error } = useGetMoviesQuery();
+
   const {
     handleChange,
     handleEditClick,
@@ -17,6 +19,13 @@ export const Home: FC = () => {
   } = useHandleEdit();
 
   const { handleDeleteClick } = useHandleDelete();
+
+  const {
+    newMovie,
+    hasInputError,
+    handleNewMovieChange,
+    handleCreateMovie,
+  } = useHandleCreate();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -45,6 +54,34 @@ export const Home: FC = () => {
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>
+              <input
+                type="text"
+                value={newMovie.title}
+                onChange={handleNewMovieChange}
+                name="title"
+              />
+              {hasInputError && !newMovie.title && (
+                <span style={{ display: "block", color: "red" }}>required</span>
+              )}
+            </td>
+            <td>
+              <input
+                type="number"
+                value={newMovie.minutes}
+                onChange={handleNewMovieChange}
+                name="minutes"
+              />
+              {hasInputError && !newMovie.minutes && (
+                <span style={{ display: "block", color: "red" }}>required</span>
+              )}
+            </td>
+            <td></td>
+            <td>
+              <button onClick={handleCreateMovie}>Create Movie</button>
+            </td>
+          </tr>
           {data?.movies?.map((m) =>
             editables.indexOf(m.id) !== -1 ? (
               <tr key={m.id}>
@@ -67,14 +104,10 @@ export const Home: FC = () => {
                   />
                 </td>
                 <td>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <button onClick={() => handleUpdate(m)}>Save</button>
-                    <button onClick={() => handleCancelEdit(m.id)}>
-                      Cancel
-                    </button>
-                  </div>
+                  <button onClick={() => handleUpdate(m)}>Save</button>
+                </td>
+                <td>
+                  <button onClick={() => handleCancelEdit(m.id)}>Cancel</button>
                 </td>
               </tr>
             ) : (
