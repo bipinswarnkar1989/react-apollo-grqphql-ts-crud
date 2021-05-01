@@ -12,22 +12,26 @@ export const useHandleDelete = () => {
       const { movies } = client.readQuery({
         query: GetMoviesDocument,
       });
-      await deleteMovie({
-        variables: {
-          id: id,
-        },
-        update: (client, { data }) => {
-          console.log(data);
-          if (data && data.deleteMovie) {
-            client.writeQuery({
-              query: GetMoviesDocument,
-              data: {
-                movies: movies.filter((m: Movie) => m.id !== id),
-              },
-            });
-          }
-        },
-      });
+      try {
+        await deleteMovie({
+          variables: {
+            id: id,
+          },
+          update: (client, { data }) => {
+            console.log(data);
+            if (data && data.deleteMovie) {
+              client.writeQuery({
+                query: GetMoviesDocument,
+                data: {
+                  movies: movies.filter((m: Movie) => m.id !== id),
+                },
+              });
+            }
+          },
+        });
+      } catch (error) {
+        alert(error.message);
+      }
     },
     [deleteMovie]
   );

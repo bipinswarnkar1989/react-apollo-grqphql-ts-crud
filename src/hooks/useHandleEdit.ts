@@ -36,26 +36,30 @@ export const useHandleEdit = () => {
 
   const handleUpdate = useCallback(
     async (movie) => {
-      await updateMovie({
-        variables: {
-          input: { title: movie.title, minutes: Number(movie.minutes) },
-          id: movie.id,
-        },
-        update: (client, { data }) => {
-          console.log(data);
-          if (data && data.updateMovie) {
-            setMessage("Movie Updated Successfully.");
-            client.writeFragment({
-              id: `Movie:${movie.id}`,
-              fragment: MovieFragmentDoc,
-              data: movie,
-            });
-            setTimeout(() => {
-              setMessage("");
-            }, 5000);
-          }
-        },
-      });
+      try {
+        await updateMovie({
+          variables: {
+            input: { title: movie.title, minutes: Number(movie.minutes) },
+            id: movie.id,
+          },
+          update: (client, { data }) => {
+            console.log(data);
+            if (data && data.updateMovie) {
+              setMessage("Movie Updated Successfully.");
+              client.writeFragment({
+                id: `Movie:${movie.id}`,
+                fragment: MovieFragmentDoc,
+                data: movie,
+              });
+              setTimeout(() => {
+                setMessage("");
+              }, 5000);
+            }
+          },
+        });
+      } catch (error) {
+        alert(error.message);
+      }
     },
     [updateMovie]
   );

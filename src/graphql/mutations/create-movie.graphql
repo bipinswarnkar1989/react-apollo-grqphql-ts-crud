@@ -1,0 +1,7 @@
+mutation createMovie ($options: MovieInput!)  {
+  createMovie(options: $options) {
+    id
+    title
+    minutes
+  }
+}
