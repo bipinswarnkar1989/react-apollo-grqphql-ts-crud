@@ -1,16 +1,18 @@
-import { useCallback, useState } from "react";
-import { client } from "../apollo/client";
+import { useCallback, useState } from 'react';
+import { client } from '../apollo/client';
 
 import {
   MovieFragmentDoc,
   Movie,
-} from "../graphql/queries/__generated__/movies.generated";
-import { useUpdateMovieMutation } from "../graphql/mutations/__generated__/update-movie.generated";
+} from '../graphql/queries/__generated__/movies.generated';
+import { useUpdateMovieMutation } from '../graphql/mutations/__generated__/update-movie.generated';
+
+import { useAlertContext } from '../context/alert/useAlertContext';
 
 export const useHandleEdit = () => {
   const [editables, setEditable] = useState<number[]>([]);
-  const [message, setMessage] = useState<string>("");
   const [updateMovie] = useUpdateMovieMutation();
+  const { createAlert } = useAlertContext();
 
   const handleChange = useCallback(
     (id: number, field: keyof Movie, fieldVal: string) => {
@@ -18,7 +20,7 @@ export const useHandleEdit = () => {
         id: `Movie:${id}`,
         fragment: MovieFragmentDoc,
         data: {
-          isEditable: "true",
+          isEditable: 'true',
           [field]: fieldVal,
         },
       });
@@ -45,15 +47,16 @@ export const useHandleEdit = () => {
           update: (client, { data }) => {
             console.log(data);
             if (data && data.updateMovie) {
-              setMessage("Movie Updated Successfully.");
+              createAlert({
+                content: 'Movie Updated Successfully.',
+                autoClose: true,
+                autoCloseDuration: 9000,
+              });
               client.writeFragment({
                 id: `Movie:${movie.id}`,
                 fragment: MovieFragmentDoc,
                 data: movie,
               });
-              setTimeout(() => {
-                setMessage("");
-              }, 5000);
             }
           },
         });
@@ -61,12 +64,11 @@ export const useHandleEdit = () => {
         alert(error.message);
       }
     },
-    [updateMovie]
+    [updateMovie, createAlert]
   );
 
   return {
     editables,
-    message,
     handleChange,
     handleEditClick,
     handleCancelEdit,
