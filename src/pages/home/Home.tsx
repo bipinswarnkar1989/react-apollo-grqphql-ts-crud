@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import { useGetMoviesQuery } from "../../graphql/queries/__generated__/movies.generated";
+import { useGetMoviesQuery } from '../../graphql/queries/__generated__/movies.generated';
 
-import { useHandleEdit } from "../../hooks/useHandleEdit";
-import { useHandleDelete } from "../../hooks/useHandleDelete";
-import { useHandleCreate } from "../../hooks/useHandleCreate";
+import { useHandleEdit } from '../../hooks/useHandleEdit';
+import { useHandleDelete } from '../../hooks/useHandleDelete';
+import { useHandleCreate } from '../../hooks/useHandleCreate';
 
 export const Home: FC = () => {
   const { data, loading, error } = useGetMoviesQuery();
@@ -15,7 +15,6 @@ export const Home: FC = () => {
     handleCancelEdit,
     handleUpdate,
     editables,
-    message,
   } = useHandleEdit();
 
   const { handleDeleteClick } = useHandleDelete();
@@ -36,11 +35,11 @@ export const Home: FC = () => {
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
       <h2>Movies</h2>
@@ -57,24 +56,24 @@ export const Home: FC = () => {
           <tr>
             <td>
               <input
-                type="text"
+                type='text'
                 value={newMovie.title}
                 onChange={handleNewMovieChange}
-                name="title"
+                name='title'
               />
               {hasInputError && !newMovie.title && (
-                <span style={{ display: "block", color: "red" }}>required</span>
+                <span style={{ display: 'block', color: 'red' }}>required</span>
               )}
             </td>
             <td>
               <input
-                type="number"
+                type='number'
                 value={newMovie.minutes}
                 onChange={handleNewMovieChange}
-                name="minutes"
+                name='minutes'
               />
               {hasInputError && !newMovie.minutes && (
-                <span style={{ display: "block", color: "red" }}>required</span>
+                <span style={{ display: 'block', color: 'red' }}>required</span>
               )}
             </td>
             <td></td>
@@ -87,19 +86,19 @@ export const Home: FC = () => {
               <tr key={m.id}>
                 <td>
                   <input
-                    type="text"
+                    type='text'
                     value={m.title}
                     onChange={(e) =>
-                      handleChange(m.id, "title", e.target.value)
+                      handleChange(m.id, 'title', e.target.value)
                     }
                   />
                 </td>
                 <td>
                   <input
-                    type="text"
+                    type='text'
                     value={m.minutes}
                     onChange={(e) =>
-                      handleChange(m.id, "minutes", e.target.value)
+                      handleChange(m.id, 'minutes', e.target.value)
                     }
                   />
                 </td>
@@ -127,7 +126,6 @@ export const Home: FC = () => {
           )}
         </tbody>
       </table>
-      <div style={{ margin: "20px" }}>{message}</div>
     </div>
   );
 };
