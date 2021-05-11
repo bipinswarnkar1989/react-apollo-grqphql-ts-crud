@@ -3,10 +3,12 @@ query getMovies {
     id
     title
     minutes
+    isEditable @client
   }
 }
 
 fragment Movie on Movie {
   title
   minutes
+  isEditable @client
 }

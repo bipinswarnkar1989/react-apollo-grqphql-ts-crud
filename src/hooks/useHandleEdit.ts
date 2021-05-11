@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { client } from '../apollo/client';
 
 import {
@@ -10,7 +10,6 @@ import { useUpdateMovieMutation } from '../graphql/mutations/__generated__/updat
 import { useAlertContext } from '../context/alert/useAlertContext';
 
 export const useHandleEdit = () => {
-  const [editables, setEditable] = useState<number[]>([]);
   const [updateMovie] = useUpdateMovieMutation();
   const { createAlert } = useAlertContext();
 
@@ -29,11 +28,17 @@ export const useHandleEdit = () => {
   );
 
   const handleEditClick = useCallback((id: number) => {
-    setEditable((prevEditables) => [...prevEditables, id]);
+    client.writeFragment({
+      id: `Movie:${id}`,
+      fragment: MovieFragmentDoc,
+      data: {
+        isEditable: true,
+      },
+    });
   }, []);
 
   const handleCancelEdit = useCallback((id: number) => {
-    setEditable((prevEditables) => prevEditables.filter((el) => el !== id));
+    //setEditable((prevEditables) => prevEditables.filter((el) => el !== id));
   }, []);
 
   const handleUpdate = useCallback(
@@ -55,7 +60,7 @@ export const useHandleEdit = () => {
               client.writeFragment({
                 id: `Movie:${movie.id}`,
                 fragment: MovieFragmentDoc,
-                data: movie,
+                data: { ...movie, isEditable: false },
               });
             }
           },
@@ -68,7 +73,6 @@ export const useHandleEdit = () => {
   );
 
   return {
-    editables,
     handleChange,
     handleEditClick,
     handleCancelEdit,

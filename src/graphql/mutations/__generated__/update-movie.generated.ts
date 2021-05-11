@@ -19,8 +19,9 @@ export type Scalars = {
 export type Movie = {
   __typename?: 'Movie';
   id: Scalars['Int'];
-  title: Scalars['String'];
+  isEditable: Scalars['Boolean'];
   minutes: Scalars['Int'];
+  title: Scalars['String'];
 };
 
 export type MovieInput = {

@@ -16,8 +16,9 @@ export type Scalars = {
 
 export type Movie = {
   readonly id: Scalars['Int'];
-  readonly title: Scalars['String'];
+  readonly isEditable: Scalars['Boolean'];
   readonly minutes: Scalars['Int'];
+  readonly title: Scalars['String'];
 };
 
 export type MovieInput = {
@@ -137,11 +138,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Movie: ResolverTypeWrapper<Movie>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   MovieInput: MovieInput;
   MovieUpdateInput: MovieUpdateInput;
   Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Query: ResolverTypeWrapper<{}>;
 };
 
@@ -149,18 +150,19 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Movie: Movie;
   Int: Scalars['Int'];
+  Boolean: Scalars['Boolean'];
   String: Scalars['String'];
   MovieInput: MovieInput;
   MovieUpdateInput: MovieUpdateInput;
   Mutation: {};
-  Boolean: Scalars['Boolean'];
   Query: {};
 };
 
 export type MovieResolvers<ContextType = any, ParentType extends ResolversParentTypes['Movie'] = ResolversParentTypes['Movie']> = {
   id: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isEditable: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   minutes: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
