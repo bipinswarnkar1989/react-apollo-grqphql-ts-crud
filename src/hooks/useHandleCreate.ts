@@ -1,15 +1,18 @@
-import { FormEvent, useCallback, useState } from "react";
-import { client } from "../apollo/client";
+import { FormEvent, useCallback, useState } from 'react';
+import { client } from '../apollo/client';
 
 import {
   MovieInput,
   useCreateMovieMutation,
-} from "../graphql/mutations/__generated__/create-movie.generated";
-import { GetMoviesDocument } from "../graphql/queries/__generated__/movies.generated";
+} from '../graphql/mutations/__generated__/create-movie.generated';
+import {
+  GetMoviesDocument,
+  MovieFragmentDoc,
+} from '../graphql/queries/__generated__/movies.generated';
 
 export const useHandleCreate = () => {
   const [newMovie, setNewMovie] = useState<MovieInput>({
-    title: "",
+    title: '',
     minutes: 0,
   });
 
@@ -29,9 +32,10 @@ export const useHandleCreate = () => {
       setHasInputError(true);
       return;
     }
-    const { movies } = client.readQuery({
-      query: GetMoviesDocument,
+    const { movies } = client.readFragment({
+      fragment: MovieFragmentDoc,
     });
+
     try {
       await createMovie({
         variables: {
@@ -48,6 +52,10 @@ export const useHandleCreate = () => {
               data: {
                 movies: { ...movies, movie },
               },
+            });
+            setNewMovie({
+              title: '',
+              minutes: 0,
             });
           }
         },

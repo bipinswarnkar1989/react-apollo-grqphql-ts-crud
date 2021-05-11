@@ -19,8 +19,9 @@ export type Scalars = {
 export type Movie = {
   __typename?: 'Movie';
   id: Scalars['Int'];
-  title: Scalars['String'];
+  isEditable: Scalars['Boolean'];
   minutes: Scalars['Int'];
+  title: Scalars['String'];
 };
 
 export type MovieInput = {
@@ -69,19 +70,20 @@ export type GetMoviesQuery = (
   { __typename?: 'Query' }
   & { movies: Array<(
     { __typename?: 'Movie' }
-    & Pick<Types.Movie, 'id' | 'title' | 'minutes'>
+    & Pick<Types.Movie, 'id' | 'title' | 'minutes' | 'isEditable'>
   )> }
 );
 
 export type MovieFragment = (
   { __typename?: 'Movie' }
-  & Pick<Types.Movie, 'title' | 'minutes'>
+  & Pick<Types.Movie, 'title' | 'minutes' | 'isEditable'>
 );
 
 export const MovieFragmentDoc = gql`
     fragment Movie on Movie {
   title
   minutes
+  isEditable @client
 }
     `;
 export const GetMoviesDocument = gql`
@@ -90,6 +92,7 @@ export const GetMoviesDocument = gql`
     id
     title
     minutes
+    isEditable @client
   }
 }
     `;

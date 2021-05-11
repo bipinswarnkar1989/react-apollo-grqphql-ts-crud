@@ -14,7 +14,6 @@ export const Home: FC = () => {
     handleEditClick,
     handleCancelEdit,
     handleUpdate,
-    editables,
   } = useHandleEdit();
 
   const { handleDeleteClick } = useHandleDelete();
@@ -60,6 +59,7 @@ export const Home: FC = () => {
                 value={newMovie.title}
                 onChange={handleNewMovieChange}
                 name='title'
+                placeholder='Enter movie title'
               />
               {hasInputError && !newMovie.title && (
                 <span style={{ display: 'block', color: 'red' }}>required</span>
@@ -76,15 +76,15 @@ export const Home: FC = () => {
                 <span style={{ display: 'block', color: 'red' }}>required</span>
               )}
             </td>
-            <td></td>
-            <td>
+
+            <td colSpan={2}>
               <button onClick={handleCreateMovie}>Create Movie</button>
             </td>
           </tr>
-          {data?.movies?.map((m) =>
-            editables.indexOf(m.id) !== -1 ? (
-              <tr key={m.id}>
-                <td>
+          {data?.movies?.map((m) => (
+            <tr key={m.id}>
+              <td>
+                {m.isEditable ? (
                   <input
                     type='text'
                     value={m.title}
@@ -92,8 +92,12 @@ export const Home: FC = () => {
                       handleChange(m.id, 'title', e.target.value)
                     }
                   />
-                </td>
-                <td>
+                ) : (
+                  m.title
+                )}
+              </td>
+              <td>
+                {m.isEditable ? (
                   <input
                     type='text'
                     value={m.minutes}
@@ -101,29 +105,28 @@ export const Home: FC = () => {
                       handleChange(m.id, 'minutes', e.target.value)
                     }
                   />
-                </td>
-                <td>
-                  <button onClick={() => handleUpdate(m)}>Save</button>
-                </td>
-                <td>
-                  <button onClick={() => handleCancelEdit(m.id)}>Cancel</button>
-                </td>
-              </tr>
-            ) : (
-              <tr key={m.id}>
-                <td>{m.title}</td>
-                <td>{m.minutes}</td>
-                <td>
+                ) : (
+                  m.minutes
+                )}
+              </td>
+              <td style={{ textAlign: 'center' }}>
+                {!m.isEditable ? (
                   <button onClick={() => handleEditClick(m.id)}>Edit</button>
-                </td>
-                <td>
+                ) : (
+                  <button onClick={() => handleUpdate(m)}>Save</button>
+                )}
+              </td>
+              <td>
+                {!m.isEditable ? (
                   <button onClick={() => handleDeleteClick(m.id)}>
                     Delete
                   </button>
-                </td>
-              </tr>
-            )
-          )}
+                ) : (
+                  <button onClick={() => handleCancelEdit(m.id)}>Cancel</button>
+                )}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
